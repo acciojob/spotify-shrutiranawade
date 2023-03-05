@@ -57,12 +57,20 @@ public class SpotifyRepository {
     }
 
     public Album createAlbum(String title, String artistName) {
-    for (Album album :albums){
-        if (album.getTitle().equals(title))return album;
+        Artist artist = createArtist(artistName);
+    for (Album album :albums) {
+        if (album.getTitle().equals(title)) return album;
     }
     Album al = new Album(title);
     albums.add(al);
-    return al;
+  //  return al;
+        List<Album>alb = new ArrayList<>();
+        if (artistAlbumMap.containsKey(artist)){
+            alb = artistAlbumMap.get(artist);
+        }
+        alb.add(al);
+        artistAlbumMap.put(artist,alb);
+        return al;
     }
 
     public Song createSong(String title, String albumName, int length) throws Exception{
@@ -289,6 +297,9 @@ for (Song cursong : songs){
     public String mostPopularSong() {
     String name ="";
         int maxLikes = Integer.MIN_VALUE;
+        for (Song song : songs){
+            if (maxLikes== Math.max(maxLikes,song.getLikes()));
+        }
         for (Song song : songs){
             if (maxLikes== song.getLikes())name = song.getTitle();
         }
